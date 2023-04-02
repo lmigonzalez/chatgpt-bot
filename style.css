@@ -58,6 +58,7 @@ li:nth-child(odd) {
 
 /* search container */
 .input-container {
+	padding: 0 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
