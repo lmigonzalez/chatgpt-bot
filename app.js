@@ -25,7 +25,7 @@ function userInput() {
   const text = document.createElement('p');
 
   img.alt = 'writer icon';
-  img.src = '/images/user.png';
+  img.src = 'images/user.png';
   text.textContent = textInput.value;
   div.classList.add('list-container');
   div.appendChild(img);
@@ -41,7 +41,7 @@ function chatResponse(response){
 	const text = document.createElement('p');
   
 	img.alt = 'writer icon';
-	img.src = '/images/ai.png';
+	img.src = 'images/ai.png';
 	text.textContent = response;
 	div.classList.add('list-container');
 	div.appendChild(img);
