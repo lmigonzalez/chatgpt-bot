@@ -1,69 +1,85 @@
-const chatHistory = [
-	{
-		id: 1,
-		text: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.'
-	},
-	{
-		id: 2,
-		text: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.'
-	},
-	{
-		id: 3,
-		text: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.'
-	},
-	{
-		id: 4,
-		text: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.'
-	},
-	{
-		id: 5,
-		text: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.'
-	},
-	{
-		id: 6,
-		text: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.'
-	},
-	{
-		id: 7,
-		text: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.'
-	},
-	{
-		id: 8,
-		text: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.'
-	},
-	{
-		id: 9,
-		text: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.'
-	},
-	{
-		id: 10,
-		text: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.'
-	},
-]
+const chatGPT_API_KEY = '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';
+const chatGPT_API_URL = 'https://api.openai.com/v1/chat/completions';
 
+const chatHistory = [];
+const chatContainer = document.getElementById('chat');
+let textInput = document.getElementById('text-input');
 
-const chatContainer = document.getElementById('chat')
+// function generateList() {
+//   for (let i = 0; i < chatHistory.length; i++) {
+//     img.alt = 'writer icon';
+//     img.src = i % 2 === 0 ? '/images/ai.png' : '/images/user.png';
+//     text.textContent = chatHistory[i];
+//     div.classList.add('list-container');
+//     div.appendChild(img);
+//     div.appendChild(text);
+//     list.appendChild(div);
+//     chatContainer.appendChild(list);
+//   }
+// }
 
+function userInput() {
+  const list = document.createElement('li');
+  const div = document.createElement('div');
+  const img = document.createElement('img');
+  const text = document.createElement('p');
 
-
-for (let i = 0; i < chatHistory.length; i++) {
-	const div = document.createElement('div')
-	const list = document.createElement('li')
-	const text = document.createElement('p')
-	const img = document.createElement('img')
-	img.alt = 'writer icon'
-	img.src = i % 2 === 0 ? '/images/ai.png' : '/images/user.png'
-	text.textContent = chatHistory[i].text
-	div.classList.add('list-container')
-	div.appendChild(img)
-	div.appendChild(text)
-	list.appendChild(div)
-	chatContainer.appendChild(list)	
+  img.alt = 'writer icon';
+  img.src = '/images/user.png';
+  text.textContent = textInput.value;
+  div.classList.add('list-container');
+  div.appendChild(img);
+  div.appendChild(text);
+  list.appendChild(div);
+  chatContainer.appendChild(list);
 }
 
+function chatResponse(response){
+	const list = document.createElement('li');
+	const div = document.createElement('div');
+	const img = document.createElement('img');
+	const text = document.createElement('p');
+  
+	img.alt = 'writer icon';
+	img.src = '/images/ai.png';
+	text.textContent = response;
+	div.classList.add('list-container');
+	div.appendChild(img);
+	div.appendChild(text);
+	list.appendChild(div);
+	chatContainer.appendChild(list);
+}
 
+async function askQuestion() {
+	console.log(textInput.value);
+  userInput();
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${chatGPT_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: 'text-davinci-003',
+      prompt: 'rewrite:' + textInput.value.trim(),
+      temperature: 0.5,
+      max_tokens: 60,
+      top_p: 1.0,
+      frequency_penalty: 0.8,
+      presence_penalty: 0.0,
+    }),
+  };
 
-function askQuestion(){
-	console.log('click');
-	
+  try {
+    const response = await fetch(
+      'https://api.openai.com/v1/completions',
+      options
+    );
+    const json = await response.json();
+    console.log(json.choices[0].text.trim());
+    chatResponse(json.choices[0].text.trim())
+    document.getElementById('text-input').value = '';
+  } catch (error) {
+    console.error(error);
+  }
 }
