@@ -9,25 +9,27 @@
 	<title>Chatbot</title>
 </head>
 
-<body>
+<body id="body">
 
-	<main>
-		<div class="chat-container">
+	<main id="main">
+		<div id="chat-container" class="chat-container">
 			<ul id="chat">
 				<li>
 					<div class="list-container">
-						<img src="/images/ai.png" />
-						<p>Hello, how can I help you today?</p>
+						<img src="images/ai.png" />
+						<p>What types of symptoms are you experiencing? Please be specific to get the best possible guidance.</p>
 					</div>
 				</li>
+
 			</ul>
 
 		</div>
 		<div class="input-container">
 			<div class="search-container">
+				
 				<input id="text-input" type="text" placeholder="Send a message..." />
-				<button onclick="askQuestion()">
-					<img src="/images/send.png" alt="send icon" />
+				<button id="submit-btn" type="button" onclick="askQuestion()">
+					<img src="images/send.png" alt="send icon" />
 				</button>
 			</div>
 		</div>

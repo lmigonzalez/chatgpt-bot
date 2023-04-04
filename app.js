@@ -1,23 +1,16 @@
-const chatGPT_API_KEY = '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';
-const chatGPT_API_URL = 'https://api.openai.com/v1/chat/completions';
+const chatGPT_API_KEY = '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';
 
-const chatHistory = [];
+let text =
+  'It is important to drink plenty of fluids, such as water and sports drinks, to stay hydrated. If you are experiencing symptoms such as fatigue, headaches, or dizziness, it may be helpful to drink electrolyte-rich beverages like coconut water or Gatorade. Additionally, if';
+
+const body = document.getElementById('body');
+// body.scrollTop = body.scrollHeight
+
 const chatContainer = document.getElementById('chat');
+
 let textInput = document.getElementById('text-input');
 
-// function generateList() {
-//   for (let i = 0; i < chatHistory.length; i++) {
-//     img.alt = 'writer icon';
-//     img.src = i % 2 === 0 ? '/images/ai.png' : '/images/user.png';
-//     text.textContent = chatHistory[i];
-//     div.classList.add('list-container');
-//     div.appendChild(img);
-//     div.appendChild(text);
-//     list.appendChild(div);
-//     chatContainer.appendChild(list);
-//   }
-// }
-
+// user input handler: this will add the user input to the chat
 function userInput() {
   const list = document.createElement('li');
   const div = document.createElement('div');
@@ -25,33 +18,38 @@ function userInput() {
   const text = document.createElement('p');
 
   img.alt = 'writer icon';
-  img.src = '/images/user.png';
+  img.src = 'images/user.png';
   text.textContent = textInput.value;
   div.classList.add('list-container');
   div.appendChild(img);
   div.appendChild(text);
   list.appendChild(div);
   chatContainer.appendChild(list);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+  document.getElementById('submit-btn').disabled = true;
 }
 
-function chatResponse(response){
-	const list = document.createElement('li');
-	const div = document.createElement('div');
-	const img = document.createElement('img');
-	const text = document.createElement('p');
-  
-	img.alt = 'writer icon';
-	img.src = '/images/ai.png';
-	text.textContent = response;
-	div.classList.add('list-container');
-	div.appendChild(img);
-	div.appendChild(text);
-	list.appendChild(div);
-	chatContainer.appendChild(list);
+// AI response handler: this will add the AI response to the chat
+function chatResponse(response) {
+  const list = document.createElement('li');
+  const div = document.createElement('div');
+  const img = document.createElement('img');
+  const text = document.createElement('p');
+  img.alt = 'writer icon';
+  img.src = 'images/ai.png';
+  text.textContent = response;
+  div.classList.add('list-container');
+  div.appendChild(img);
+  div.appendChild(text);
+  list.appendChild(div);
+  chatContainer.appendChild(list);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+  document.getElementById('submit-btn').disabled = false;
 }
+
+// This will make a request to the API
 
 async function askQuestion() {
-	console.log(textInput.value);
   userInput();
   const options = {
     method: 'POST',
@@ -61,9 +59,11 @@ async function askQuestion() {
     },
     body: JSON.stringify({
       model: 'text-davinci-003',
-      prompt: 'rewrite:' + textInput.value.trim(),
+      prompt:
+        'Act as a doctor and give guidance based on this symptoms: \n\n' +
+        textInput.value.trim(),
       temperature: 0.5,
-      max_tokens: 60,
+      max_tokens: 200,
       top_p: 1.0,
       frequency_penalty: 0.8,
       presence_penalty: 0.0,
@@ -76,8 +76,20 @@ async function askQuestion() {
       options
     );
     const json = await response.json();
-    console.log(json.choices[0].text.trim());
-    chatResponse(json.choices[0].text.trim())
+    let text = json.choices[0].text.trim();
+
+    //This condition is to filter the result and make sure not to cut any text.
+
+    let index = text.indexOf('\n\n');
+    if (index !== -1) {
+      let filteredText = text.substring(text.indexOf('\n\n') + 2);
+      console.log(filteredText);
+      chatResponse(filteredText);
+    } else {
+      chatResponse(text);
+      console.log(text);
+    }
+
     document.getElementById('text-input').value = '';
   } catch (error) {
     console.error(error);
