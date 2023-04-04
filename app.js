@@ -29,6 +29,7 @@ function userInput() {
   document.getElementById('submit-btn').disabled = true;
 }
 
+<<<<<<< HEAD
 // AI response handler: this will add the AI response to the chat
 function chatResponse(response) {
   const list = document.createElement('li');
@@ -45,6 +46,22 @@ function chatResponse(response) {
   chatContainer.appendChild(list);
   chatContainer.scrollTop = chatContainer.scrollHeight;
   document.getElementById('submit-btn').disabled = false;
+=======
+function chatResponse(response){
+	const list = document.createElement('li');
+	const div = document.createElement('div');
+	const img = document.createElement('img');
+	const text = document.createElement('p');
+  
+	img.alt = 'writer icon';
+	img.src = 'images/ai.png';
+	text.textContent = response;
+	div.classList.add('list-container');
+	div.appendChild(img);
+	div.appendChild(text);
+	list.appendChild(div);
+	chatContainer.appendChild(list);
+>>>>>>> refs/remotes/origin/main
 }
 
 // This will make a request to the API
