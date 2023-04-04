@@ -37,14 +37,20 @@ function chatResponse(response){
   
 	img.alt = 'writer icon';
   img.src = 'images/ai.png';
-  response.split(" ").forEach((element,idx) => {    
-    setTimeout(text.textContent = text.textContent +" "+ element, idx*1000)
-  });
+  text.textContent = ''
+  const responseWord = response.split(" ");
+  
 	div.classList.add('list-container');
 	div.appendChild(img);
 	div.appendChild(text);
 	list.appendChild(div);
-	chatContainer.appendChild(list);
+  chatContainer.appendChild(list);
+
+  for (let index = 0; index < responseWord.length; index++) {    
+    const element = responseWord[index];
+    setTimeout(() => { console.log(element); text.textContent += " " +  element },index*100)
+    
+  }
 }
 
 // This will make a request to the API
