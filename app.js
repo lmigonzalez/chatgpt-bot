@@ -1,4 +1,4 @@
-const chatGPT_API_KEY = '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';
+
 
 let text =
   'It is important to drink plenty of fluids, such as water and sports drinks, to stay hydrated. If you are experiencing symptoms such as fatigue, headaches, or dizziness, it may be helpful to drink electrolyte-rich beverages like coconut water or Gatorade. Additionally, if';
@@ -29,24 +29,6 @@ function userInput() {
   document.getElementById('submit-btn').disabled = true;
 }
 
-<<<<<<< HEAD
-// AI response handler: this will add the AI response to the chat
-function chatResponse(response) {
-  const list = document.createElement('li');
-  const div = document.createElement('div');
-  const img = document.createElement('img');
-  const text = document.createElement('p');
-  img.alt = 'writer icon';
-  img.src = 'images/ai.png';
-  text.textContent = response;
-  div.classList.add('list-container');
-  div.appendChild(img);
-  div.appendChild(text);
-  list.appendChild(div);
-  chatContainer.appendChild(list);
-  chatContainer.scrollTop = chatContainer.scrollHeight;
-  document.getElementById('submit-btn').disabled = false;
-=======
 function chatResponse(response){
 	const list = document.createElement('li');
 	const div = document.createElement('div');
@@ -54,14 +36,15 @@ function chatResponse(response){
 	const text = document.createElement('p');
   
 	img.alt = 'writer icon';
-	img.src = 'images/ai.png';
-	text.textContent = response;
+  img.src = 'images/ai.png';
+  response.split(" ").forEach((element,idx) => {    
+    setTimeout(text.textContent = text.textContent +" "+ element, idx*1000)
+  });
 	div.classList.add('list-container');
 	div.appendChild(img);
 	div.appendChild(text);
 	list.appendChild(div);
 	chatContainer.appendChild(list);
->>>>>>> refs/remotes/origin/main
 }
 
 // This will make a request to the API
